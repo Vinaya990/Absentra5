@@ -32,6 +32,7 @@ interface DataContextType {
   getEmployeeByUserId: (userId: string) => Employee | undefined;
   generateNextEmployeeId: () => Promise<string>;
   reserveEmployeeId: () => Promise<{ id: string; release: () => void }>;
+  isGeneratingId: boolean;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);

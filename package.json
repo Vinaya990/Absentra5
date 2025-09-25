@@ -4,13 +4,30 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"tsx --watch server/index.ts\" \"vite\"",
+    "dev:frontend": "vite",
+    "dev:backend": "tsx --watch server/index.ts",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx server/seed.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@neondatabase/serverless": "^1.0.1",
     "@supabase/supabase-js": "^2.57.4",
+    "@tanstack/react-query": "^5.90.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/ws": "^8.18.1",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "drizzle-kit": "^0.31.4",
+    "drizzle-orm": "^0.44.5",
+    "drizzle-zod": "^0.8.3",
+    "express": "^5.1.0",
     "jspdf": "^3.0.2",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.344.0",
@@ -18,7 +35,10 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.9.0",
     "serve": "^14.2.5",
-    "xlsx": "^0.18.5"
+    "tsx": "^4.20.5",
+    "ws": "^8.18.3",
+    "xlsx": "^0.18.5",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
