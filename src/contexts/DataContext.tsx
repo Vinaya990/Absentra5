@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Employee, Department, LeaveRequest, Holiday, LeaveBalance, LeaveType, ApprovalStep, UserRole, LeavePolicy, User } from '../types';
+import { Employee, Department, LeaveRequest, Holiday, LeaveBalance, LeaveType, ApprovalStep, LeavePolicy, User, LeaveStatus } from '../types';
 import { useAuth } from './AuthContext';
 
 interface DataContextType {
@@ -30,6 +30,8 @@ interface DataContextType {
   updateLeavePolicy: (id: string, policy: Partial<LeavePolicy>) => void;
   validateLeaveRequest: (request: { employee_id: string; leave_type: LeaveType; from_date: string; to_date: string; days_count: number }) => { isValid: boolean; errors: string[] };
   getEmployeeByUserId: (userId: string) => Employee | undefined;
+  generateNextEmployeeId: () => Promise<string>;
+  reserveEmployeeId: () => Promise<{ id: string; release: () => void }>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -462,7 +464,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Determine overall status
       const allApproved = updatedApprovals.every(a => a.status === 'approved');
-      const overallStatus = allApproved ? 'approved' : 'pending';
+      const overallStatus: LeaveStatus = allApproved ? 'approved' : 'pending';
       isFullyApproved = allApproved;
       
       const updatedRequest = {
@@ -538,7 +540,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const updatedRequest = {
         ...req,
         approvals: updatedApprovals,
-        status: 'rejected',
+        status: 'rejected' as LeaveStatus,
         updated_at: new Date().toISOString()
       };
       requestData = updatedRequest;
